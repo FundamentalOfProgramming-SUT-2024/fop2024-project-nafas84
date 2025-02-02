@@ -1,0 +1,9 @@
+username:Nz,score:355,gold:175,games:2,time:1
+username:Amir,score:50,gold:50,games:1,time:0
+username:Mahdi,score:130,gold:65,games:1,time:0
+username:Sara,score:0,gold:0,games:0,time:0
+username:Mamad,score:0,gold:0,games:0,time:0
+username:jon,score:0,gold:0,games:0,time:0
+username:pedaret,score:0,gold:0,games:0,time:0
+username:sherek,score:310,gold:155,games:2,time:0
+username:Hossein,score:0,gold:0,games:0,time:0
