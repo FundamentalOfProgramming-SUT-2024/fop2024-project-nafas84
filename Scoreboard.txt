@@ -1,8 +1,8 @@
-username:Nz,score:110,gold:55,games:2,time:1738861508
+username:Nz,score:170,gold:85,games:4,time:1738861508
 username:Nafiseh,score:0,gold:0,games:0,time:1738861526
 username:AmirHossein,score:0,gold:0,games:0,time:1738861559
 username:Mehdi,score:0,gold:0,games:0,time:1738861573
-username:Sherek,score:0,gold:0,games:0,time:1738861627
+username:Sherek,score:350,gold:175,games:1,time:1738861627
 username:Mamad,score:0,gold:0,games:0,time:1738861639
 username:Osgol,score:0,gold:0,games:0,time:1738861651
 username:Sag,score:0,gold:0,games:0,time:1738861677

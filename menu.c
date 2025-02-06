@@ -202,6 +202,7 @@ void Login_Menu() {
                     strcpy(current_user.username, "Guest");
                     current_user.color = 0;
                     current_user.difficulty = 0;
+                    current_user.music = 0;
                     Pre_Game_Menu();
                     break;
                 }
@@ -274,6 +275,7 @@ void Login() {
             strcpy(current_user.username, person.username);
             current_user.color = 0;
             current_user.difficulty = 0;
+            current_user.music = 0;
 
             clear();
             attron(COLOR_PAIR(3));
@@ -548,6 +550,95 @@ void Setting_Menu(){
                 choose = 1;
                 break;
         }
+    }
+    clear();
+    strcpy(message,"\t Choose your music");
+
+    const char* setting_game_menu3[] = {
+        "Nothing",
+        "Sonso (Sangre De Muerdago)",
+        "The Ensemble Of silence (Empyrium)"
+    };  
+    choose = 0;
+    while(!choose) {
+        // Get window width & Height
+        getmaxyx(stdscr, h, w);
+
+        // Draw Box and Masseges
+        erase();
+        attron(COLOR_PAIR(1));
+        box(stdscr , 0 , 0);
+        mvprintw(1 ,1 ,"%s",message);
+
+        Print_Menu(highlight , setting_game_menu3 , n_choices);
+        int ch = getch();
+    
+        switch (ch) {
+
+            case KEY_UP:
+                highlight--;
+                if (highlight < 0) highlight = n_choices - 1;
+                break;
+
+            case KEY_DOWN:
+                highlight++;
+                if (highlight >= n_choices) highlight = 0;
+                break;
+
+            case 10:
+                if(highlight == 0){ 
+                    current_user.music = 0;
+                }
+                else if(highlight == 1 || highlight == 2){
+                    current_user.music = 1;
+                }
+                else if(highlight == 2){
+                    current_user.music = 2;
+                }
+                Play_Music(current_user.music);
+                choose = 1;
+                break;
+        }
+    }
+}
+void Play_Music(int m){
+    char music_path[50];
+    if(m == 0){
+        return;
+    }else if(m == 1){
+        strcpy(music_path,"sonso.mp3");
+    }else if(m == 2){
+        strcpy(music_path,"ensemble.mp3");
+    }
+
+    // Initialize SDL and SDL_mixer
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        return;
+    }
+
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        printf("SDL_mixer could not initialize! Mix_Error: %s\n", Mix_GetError());
+        SDL_Quit();
+        return;
+    }
+
+    // Load the music file
+    Mix_Music *music = Mix_LoadMUS(music_path);
+    if (!music) {
+        printf("Failed to load music! Mix_Error: %s\n", Mix_GetError());
+        Mix_CloseAudio();
+        SDL_Quit();
+        return;
+    }
+
+    // Play the music (-1 = loop indefinitely)
+    if (Mix_PlayMusic(music, -1) == -1) {
+        printf("Error playing music: %s\n", Mix_GetError());
+        Mix_FreeMusic(music);
+        Mix_CloseAudio();
+        SDL_Quit();
+        return;
     }
 }
 void Profile_Menu(){

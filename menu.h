@@ -9,6 +9,8 @@
 #include<sys/stat.h>
 #include<stdio.h>
 #include<time.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 extern int GAME_M;
 typedef struct{
@@ -16,6 +18,7 @@ typedef struct{
     int difficulty; // 0 -> easy , 1 -> medium , 2 -> hard
     int color;     //  0 -> white ,1 -> blue  , 2 -> red 
     int load_game;
+    int music; // 0 -> nothing , 1 -> Sonso Sangre De Muerdago , 2 -> The Ensemble Of silence Empyrium
 }Setting;
 
 extern Setting current_user;
@@ -43,6 +46,7 @@ void Print_Menu(int highlight, const char* choices[], int n_choices);
     void Pre_Game_Menu();
     void ScoreBoard();
     void Setting_Menu();
+    void Play_Music(int m);
     void Profile_Menu();
 
 

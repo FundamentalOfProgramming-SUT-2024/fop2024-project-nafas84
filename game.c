@@ -94,9 +94,35 @@ int play_game() {
     GAME_M = 0; // for back to main menu
     if(s_key){
         Save_Game();
+        if(!current_user.music){
+            char music_path[50];
+            if(current_user.music == 1){
+                strcpy(music_path,"sonso.mp3");
+            }else if(current_user.music == 2){
+                strcpy(music_path,"ensemble.mp3");
+            }
+            Mix_Music *music = Mix_LoadMUS(music_path);
+            // Cleanup
+            Mix_FreeMusic(music);
+            Mix_CloseAudio();
+            SDL_Quit();
+        }
         return 0;
     }
     else{
+        if(!current_user.music){
+            char music_path[50];
+            if(current_user.music == 1){
+                strcpy(music_path,"sonso.mp3");
+            }else if(current_user.music == 2){
+                strcpy(music_path,"ensemble.mp3");
+            }
+            Mix_Music *music = Mix_LoadMUS(music_path);
+            // Cleanup
+            Mix_FreeMusic(music);
+            Mix_CloseAudio();
+            SDL_Quit();
+        }
         Update_Scoreboard(player.life);
         End_Game_Menu(player.life);
         return 1;
