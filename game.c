@@ -121,20 +121,32 @@ void set_color(){
     init_color(23, 1000, 500, 500);
     init_color(24, 0, 1000, 500);
     init_color(25, 0, 0, 1000);
+    init_color(26, 941, 902, 549);
+    init_color(27, 1000, 714, 757);
+    init_color(28, 1000, 627, 690);
+    init_color(29 ,1000, 412, 706);
+    init_color(30, 800, 600, 1000);
+    init_color(31, 1000, 800, 0);
+    init_color(32, 502, 0, 125);
 
-    init_pair(0, COLOR_WHITE, COLOR_BLACK); // REGULAR
+    init_pair(0, COLOR_WHITE, COLOR_BLACK); // 
     init_pair(1, COLOR_BLUE, COLOR_BLACK); // box
     init_pair(2, COLOR_RED, COLOR_BLACK);  // monsters
-    init_pair(3, COLOR_GREEN, COLOR_BLACK); // rankcurrent messaga2
-    init_pair(4, COLOR_YELLOW, COLOR_BLACK); // زرد بدرنگ TREASURE & normal food & exellent food & magical food & spoiled food
-    init_pair(5, COLOR_MAGENTA, COLOR_BLACK); // بنفش خودش ENCHANT
-    init_pair(6, 20, COLOR_BLACK); // نارنجی پررنگ  treasure rank3
-    init_pair(7, 21, COLOR_BLACK); // زرد health bar & black gold & normal gold & rank1
+    init_pair(3, COLOR_GREEN, COLOR_BLACK); // rankcurrent & messaga2 & exellent food
+    init_pair(4, 31, COLOR_BLACK); // زرد بدرنگ TREASURE
+    init_pair(5, 30, COLOR_BLACK); // بنفش  ENCHANT
+    init_pair(6, 20, COLOR_BLACK); // نارنجی پررنگ rank3
+    init_pair(7, 21, COLOR_BLACK); // زرد health bar & normal gold & rank1
     init_pair(8, 22, COLOR_BLACK); // بنفش کمرنگ mace weapon & dagger weapon & magic weapon & normal arrow weapon & sword weapon
     init_pair(9, 23, COLOR_BLACK); // صورتی/قرمز کمرنگ trap
-    init_pair(10, 24, COLOR_BLACK); // سبز کمرنگ   stair
-    init_pair(11, 25, COLOR_BLACK); // ابی پررنگ health potion & speed potion & damage potion
+    init_pair(10, 24, COLOR_BLACK); // سبز کمرنگ   stair & treasure
+    init_pair(11, 32, COLOR_BLACK); // black gold
     init_pair(12, COLOR_CYAN, COLOR_BLACK); // نقره ای  rank2
+    init_pair(13, 26, COLOR_BLACK); //  REGULAR
+    init_pair(14, 27, COLOR_BLACK); // health potion
+    init_pair(15, 28, COLOR_BLACK); // speed potion
+    init_pair(16, 29, COLOR_BLACK); // damage potion
+    init_pair(17, COLOR_YELLOW, COLOR_BLACK); // magical food
 }
 void make_map(){
     clear();
@@ -361,7 +373,7 @@ void save_room(Room room, int I){
     for(int i = room.x; i <= room.w + room.x; i++){
         for(int j = room.y; j <= room.h + room.y;j++){
             map[j][i].visible = (I == 4) ? 1 : 0;
-            map[j][i].color   = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 0;
+            map[j][i].color   = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 13;
             if(j == room.y || j == room.h + room.y){
                 strcpy(map[j][i].type, s_wall_o);
             }else if(i == room.x || i == room.w + room.x){
@@ -380,7 +392,7 @@ void save_room(Room room, int I){
 
                 strcpy(map[y][x].type,s_pillar);
                 map[y][x].visible = (I == 4) ? 1 : 0;
-                map[y][x].color   = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 0;
+                map[y][x].color   = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 13;
             }
         }   
     int n_trap = (current_user.difficulty == 0) ?  0 : (current_user.difficulty == 1) ? 5 : 10;
@@ -413,11 +425,11 @@ void save_room(Room room, int I){
         strcpy(map[room.doors[i].y][room.doors[i].x].type, s_secret_door);
         map[room.doors[i].y][room.doors[i].x].visible = 0;           
         }
-        map[room.doors[i].y][room.doors[i].x].color   = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 0;
+        map[room.doors[i].y][room.doors[i].x].color   = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 13;
         // save windows
         strcpy(map[room.windows[i].y][room.windows[i].x].type, s_window);
         map[room.windows[i].y][room.windows[i].x].visible = (I == 4)  ? 1 : 0;
-        map[room.windows[i].y][room.windows[i].x].color   = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 0;
+        map[room.windows[i].y][room.windows[i].x].color   = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 13;
     }
 }
 void add_obj(Room room, int I){
@@ -435,7 +447,7 @@ void add_obj(Room room, int I){
             if(pos < 15){
                 strcpy(map[y][x].type,s_black_gold);
                 map[y][x].visible = (I == 4) ? 1 : 0;
-                map[y][x].color   =  7;
+                map[y][x].color   =  11;
             }else{
                 strcpy(map[y][x].type,s_normal_gold);
                 map[y][x].visible = (I == 4) ? 1 : 0;
@@ -449,7 +461,7 @@ void add_obj(Room room, int I){
         int y = rand() % (Rooms[I].h - 2) + Rooms[I].y + 1;  
         strcpy(map[y][x].type,s_treasure);
         map[y][x].visible = 0;
-        map[y][x].color   = 6;
+        map[y][x].color   = 10;
     }
 
     // make and save foods
@@ -465,15 +477,15 @@ void add_obj(Room room, int I){
             switch(pos){
                 case 0:
                     strcpy(map[y][x].type,s_normal_food);
-                    map[y][x].color   =  4;
+                    map[y][x].color   =  12;
                     break;
                 case 1:
                     strcpy(map[y][x].type,s_exellent_food);
-                    map[y][x].color   =  4;
+                    map[y][x].color   =  3;
                     break;
                 case 2:
                     strcpy(map[y][x].type,s_magical_food);
-                    map[y][x].color   =  4;
+                    map[y][x].color   =  17;
                     break;            
             }
         }          
@@ -523,15 +535,15 @@ void add_obj(Room room, int I){
             switch(pos){
                 case 0:
                     strcpy(map[y][x].type,s_health_potion);
-                    map[y][x].color   =  11;
+                    map[y][x].color   =  14;
                     break;
                 case 1:
                     strcpy(map[y][x].type,s_speed_potion);
-                    map[y][x].color   =  11;
+                    map[y][x].color   =  15;
                     break;
                 case 2:
                     strcpy(map[y][x].type,s_damage_potion);
-                    map[y][x].color   =  11;
+                    map[y][x].color   =  16;
                     break;              
             }
         }          
@@ -590,6 +602,7 @@ void print_game(int m){
     attroff(COLOR_PAIR(1));
 
     mvprintw(1, 1, "%s", Message);
+    //strcpy(Message,"");
 
     attron(COLOR_PAIR(3));
         mvprintw(2, 1, "%s", Message2);
@@ -626,7 +639,7 @@ void print_game(int m){
                     if((map[j][i+1].visible == 1) || (map[j][i-1].visible == 1)){
                         attroff(COLOR_PAIR(map[j][i].color));
                         int I = which_room(i, j);
-                        int color = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 0;
+                        int color = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 13;
                             attron(COLOR_PAIR(color));
                                 mvprintw(j, i, s_floor);
                             attroff(COLOR_PAIR(color));
@@ -639,6 +652,7 @@ void print_game(int m){
     }
     // print monsters
     for(int J = 0; J < 6; J++){
+        attron(A_BOLD);
         attron(COLOR_PAIR(2));
         if(Monsters[J].visibality == 1 && !m && Monsters[J].life > 0){
             mvprintw(Monsters[J].y, Monsters[J].x,"%c",Monsters[J].type);
@@ -646,6 +660,8 @@ void print_game(int m){
             mvprintw(Monsters[J].y, Monsters[J].x,"%c",Monsters[J].type);
         }
         attroff(COLOR_PAIR(2));
+        attroff(A_BOLD);
+
     }
         
     // print player
@@ -694,7 +710,7 @@ void update_visibility(int x, int y){
         player.gold += 10;
         player.score += 10;
         strcpy(map[y][x].type,s_floor);
-        int color = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 0;
+        int color = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 13;
         map[y][x].color = color;
     }
     else if((strcmp(map[y][x].type,s_normal_gold)  == 0)){
@@ -702,7 +718,7 @@ void update_visibility(int x, int y){
         player.gold += 5;
         player.score += 5;
         strcpy(map[y][x].type,s_floor);
-        int color = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 0;
+        int color = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 13;
         map[y][x].color = color;
     }   
     // Update monsters visibality
@@ -711,8 +727,8 @@ void update_visibility(int x, int y){
 void collect_backpack(int ch){
     int x = player.x;
     int y = player.y;
-    int check = 0;
     if(ch == 99){ // c (collect)
+    int check = 0;
         if(strcmp(map[y][x].type,s_normal_food) == 0)       { player.backpack.normal_food ++; check = 1;}
         else if(strcmp(map[y][x].type,s_exellent_food) == 0){ player.backpack.exellent_food ++; check = 1;}
         else if(strcmp(map[y][x].type,s_magical_food) == 0){ player.backpack.magical_food ++; check = 1;}
@@ -729,14 +745,14 @@ void collect_backpack(int ch){
         if(check){
             strcpy(map[y][x].type,s_floor);
             int I = which_room(x, y);
-            int color = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 0;
-            map[y][x].color = color;
+            map[y][x].color = (strcmp(Rooms[I].theme,"ENCHANT") == 0) ? 5 : (strcmp(Rooms[I].theme,"TREASURE") == 0) ? 4 : 13;
         }
     }
     else if(ch == 98){ // b (backpack)
         Backpack_Menu();
     }
     else if(ch == 32){// space (shooting)
+        int check_kill = 0;
         int n = ((strcmp(player.current_abilaty,"2x power") == 0) && player.n_space > 0) ? 2 : 1;
         player.n_space = (player.n_space > 0) ? player.n_space -1 : 0 ;
         // for close-range weapons
@@ -744,8 +760,10 @@ void collect_backpack(int ch){
             for(int J = 0; J < 6; J++){
                 if((player.x - 1 <= Monsters[J].x && Monsters[J].x <= player.x + 1) && (player.y - 1 <= Monsters[J].y && Monsters[J].y <= player.y + 1)){
                     Monsters[J].life -= (5 * n);
-                    if(Monsters[J].life > 0)
+                    if(Monsters[J].life > 0){
+                        check_kill = 1;
                         sprintf(Message2,"\t You damaged %c monster (Remaining life: %d)",Monsters[J].type,Monsters[J].life);
+                    }
                 }
             }
         }
@@ -753,8 +771,10 @@ void collect_backpack(int ch){
             for(int J = 0; J < 6; J++){
                 if((player.x - 1 <= Monsters[J].x && Monsters[J].x <= player.x + 1) && (player.y - 1 <= Monsters[J].y && Monsters[J].y <= player.y + 1)){
                     Monsters[J].life -= (10 * n);
-                    if(Monsters[J].life > 0)
+                    if(Monsters[J].life > 0){
+                        check_kill = 1;
                         sprintf(Message2,"\t You damaged %c monster (Remaining life: %d)",Monsters[J].type,Monsters[J].life);
+                    }
                 }
             }
         }
@@ -764,7 +784,6 @@ void collect_backpack(int ch){
             if(strcmp(player.current_weapon,"dagger") == 0){
                 if(player.backpack.dagger_weapon > 0){
                 player.backpack.dagger_weapon--;
-
                 for(int J = 0; J < 6; J++){
                     int check = 0;
                     if      (sh == KEY_UP     && (Monsters[J].x == player.x) && (player.y - 5 <= Monsters[J].y && Monsters[J].y <= player.y)){ //  damage for 5 distanc
@@ -778,8 +797,10 @@ void collect_backpack(int ch){
                     }
                     if(check){
                         Monsters[J].life -= (12 * n);
-                            if(Monsters[J].life > 0)
+                    if(Monsters[J].life > 0){
+                        check_kill = 1;
                         sprintf(Message2,"\t You damaged %c monster (Remaining life: %d)",Monsters[J].type,Monsters[J].life);
+                    }
                     }
                 }
                 }else{
@@ -789,9 +810,9 @@ void collect_backpack(int ch){
             else if(strcmp(player.current_weapon,"magic wand") == 0){
                 if(player.backpack.magic_wond_weapon > 0){
                 player.backpack.magic_wond_weapon--;
-
+                int check = 0;
                 for(int J = 0; J < 6; J++){
-                    int check = 0;
+                    
                     if     (sh == KEY_UP     && (Monsters[J].x == player.x) && (player.y - 10 <= Monsters[J].y && Monsters[J].y <= player.y)){ //  damage for 10 distanc
                         check = 1;
                     }else if(sh == KEY_DOWN  && (Monsters[J].x == player.x) && (player.y <= Monsters[J].y && Monsters[J].y <= player.y + 10)){ //  damage for 10 distanc
@@ -803,8 +824,10 @@ void collect_backpack(int ch){
                     }
                     if(check){
                         Monsters[J].life -= (12 * n);
-                        if(Monsters[J].life > 0)
-                            sprintf(Message2,"\t You damaged %c monster (Remaining life: %d)",Monsters[J].type,Monsters[J].life);
+                    if(Monsters[J].life > 0){
+                        check_kill = 1;
+                        sprintf(Message2,"\t You damaged %c monster (Remaining life: %d)",Monsters[J].type,Monsters[J].life);
+                    }
                     }
                 }
                 }else{
@@ -828,8 +851,10 @@ void collect_backpack(int ch){
                     }
                     if(check){
                         Monsters[J].life -= (5 * n);
-                        if(Monsters[J].life > 0)
-                            sprintf(Message2,"\t You damaged %c monster (Remaining life: %d)",Monsters[J].type,Monsters[J].life);
+                    if(Monsters[J].life > 0){
+                        check_kill = 1;
+                        sprintf(Message2,"\t You damaged %c monster (Remaining life: %d)",Monsters[J].type,Monsters[J].life);
+                    }
                     }
                 }
                 }else{
@@ -839,9 +864,9 @@ void collect_backpack(int ch){
         }
         // update visibality and life monster & message
         for(int J = 0; J < 6; J++){
-            if(Monsters[J].life <= 0){
+            if(Monsters[J].life <= 0 && Monsters[J].visibality){
                 Monsters[J].visibality = 0;
-                sprintf(Message,"\t You killed %c monster",Monsters[J].type);
+                sprintf(Message,"\t The last monster you killed is %c monster",Monsters[J].type);
             }
         }
     }
@@ -1031,6 +1056,8 @@ void End_Game_Menu(int life){
     box(stdscr , 0 , 0);
     mvprintw(1, 1, "\tPress enter to back to Pre-Menu Game");
     attroff(COLOR_PAIR(1));
+    
+
 /*
                            ,--.
                           {    }
@@ -1081,6 +1108,7 @@ void End_Game_Menu(int life){
                            `\%`@|     v      |@@%@%%    - mfj
                          .%%%@@@|%    |    % @@@%%@%%%%
                     _.%%%%%%@@@@@@%%_/%\_%@@%%@@@@@@@%%%%%%*/
+
 
 /*
 *******************************************************************************
@@ -1288,7 +1316,7 @@ void Potion_Menu(){
     char health[50];
     char speed[50];
     char damage[50];
-    sprintf(health, "%s     Health        %d      2x H", s_health_potion, player.backpack.health_potion);
+    sprintf(health, "%s     Health        %d      2x L", s_health_potion, player.backpack.health_potion);
     sprintf(speed,  "%s      Speed       %d      2x S", s_speed_potion, player.backpack.speed_potion);
     sprintf(damage, "%s     Damage       %d      2x P", s_damage_potion, player.backpack.damage_potion);
     const char* potion_menu[] = {

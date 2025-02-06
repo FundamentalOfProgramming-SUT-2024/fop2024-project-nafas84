@@ -390,13 +390,16 @@ void ScoreBoard(){
             }
         }
     }
+    if(strcmp(users[i-1].name, current_user.username) == 0){
+        cur_j = i-1;
+    }
 
     // display scoreboard
     clear();
     attron(COLOR_PAIR(1));
     box(stdscr , 0 , 0);
     mvprintw(1, 1, "\tPress enter to back to Pre-Menu Game");
-    mvprintw(3, (w - 70)/2 , "Rank    Usetname                Scores    Golds    Games    Wins");
+    mvprintw(3, (w - 70)/2 , "Rank    Username                Scores    Golds    Games    Wins");
     mvprintw(4, (w - 70)/2 , "________________________________________________________________");
     attroff(COLOR_PAIR(1));
 
@@ -404,18 +407,21 @@ void ScoreBoard(){
         char curline[200];
         // rank1
         if(j == 0){
+            attron(A_BOLD);
             attron(COLOR_PAIR(7));
             sprintf(curline,     "%-4d    🥇 Goat %-12s    %-6d    %-5d    %-5d    %-4d"
             ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, users[j].time);
         }
         // rank2
         else if(j == 1){
+            attron(A_BOLD);
             attron(COLOR_PAIR(12));
             sprintf(curline,     "%-4d    🥈 Legend %-11s   %-6d    %-5d    %-5d    %-4d"
             ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, users[j].time);
         }
         // rank3
         else if(j == 2){
+            attron(A_BOLD);
             attron(COLOR_PAIR(6));
             sprintf(curline,     "%-4d    🥉 Myth %-13s   %-6d    %-5d    %-5d    %-4d"
             ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, users[j].time);
@@ -435,9 +441,9 @@ void ScoreBoard(){
 
         mvprintw(6 + j*2 , (w - 70)/2,"%s", curline);
 
-        if(j == 0) {attroff(COLOR_PAIR(7));}
-        else if(j == 1)     {attroff(COLOR_PAIR(12));}
-        else if(j == 2)     {attroff(COLOR_PAIR(6));}
+        if(j == 0)          {attroff(COLOR_PAIR(7));  attroff(A_BOLD);}
+        else if(j == 1)     {attroff(COLOR_PAIR(12)); attroff(A_BOLD);}
+        else if(j == 2)     {attroff(COLOR_PAIR(6));  attroff(A_BOLD);}
         else if(j == cur_j) {attroff(COLOR_PAIR(3));}
         else                {attroff(COLOR_PAIR(0));}
     }
@@ -504,7 +510,7 @@ void Setting_Menu(){
     const char* setting_game_menu2[] = {
         "WHITE",
         "BLUE",
-        "RED",
+        "RED"
     };  
     choose = 0;
     while(!choose) {

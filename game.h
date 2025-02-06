@@ -25,29 +25,29 @@
 #define s_secret_door "?"
 // Foods
 #define s_normal_food "🌢"
-#define s_exellent_food "𓄯"
+#define s_exellent_food "☘"
 #define s_magical_food "𐂂"
 //#define s_spoiled_food "𓆛"
 // Gold
 #define s_normal_gold "⛂"
 #define s_black_gold "⛃"
-#define s_treasure "░"
+#define s_treasure "🗝"
 // Weapon
 #define s_mace_weapon "🛠"
 #define s_dagger_weapon "🗡"
-#define s_magic_wond_weapon "⚚"
+#define s_magic_wond_weapon "⚕"
 #define s_normal_arrow_weapon "➜"
 #define s_sword_weapon "⚔"
 // Potion
-#define s_health_potion "𓁿"
+#define s_health_potion "🕊"
 #define s_speed_potion "⛸"
-#define s_damage_potion "❁"
+#define s_damage_potion "🗲"
 // Monster
 #define s_deamon_monster "D"
 #define s_fire_breathing_monster "F"
 #define s_giant_monster "G"
 #define s_snake_monster "S"
-#define s_undeed_monster "☠U"
+#define s_undeed_monster "U"
 
 
 // Structs
