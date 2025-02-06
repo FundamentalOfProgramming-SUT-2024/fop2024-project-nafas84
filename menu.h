@@ -8,6 +8,7 @@
 #include<unistd.h>
 #include<sys/stat.h>
 #include<stdio.h>
+#include<time.h>
 
 extern int GAME_M;
 typedef struct{
@@ -42,6 +43,7 @@ void Print_Menu(int highlight, const char* choices[], int n_choices);
     void Pre_Game_Menu();
     void ScoreBoard();
     void Setting_Menu();
+    void Profile_Menu();
 
 
 #endif

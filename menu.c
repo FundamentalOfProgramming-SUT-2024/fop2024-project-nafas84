@@ -292,12 +292,13 @@ void Pre_Game_Menu() {
 
     // Print_Menu inputs
     int highlight = 0;
-    int n_choices = 4;
+    int n_choices = 5;
     const char* pre_game_menu[] = {
         "New Game",
         "Resume Game",
         "Scoreboard",
-        "Setting"
+        "Setting",
+        "Profile"
     };  
     while(1) {
         // Get window width & Height
@@ -340,6 +341,8 @@ void Pre_Game_Menu() {
                 }
                 else if(highlight == 3){
                     Setting_Menu();
+                }else if(highlight == 4 && strcmp(current_user.username,"Guest") != 0){
+                    Profile_Menu();
                 }
                 break;
         }
@@ -354,20 +357,13 @@ void ScoreBoard(){
         int score;
         int gold;
         int games;
-        int time;
+        long int time;
     }Board;
     Board users[200];
 
-    /*for(int z = 0; z < 200; z++){
-        users[z].score = 0;
-        users[z].games = 0;
-        users[z].gold = 0;
-        users[z].time = 0;
-    }*/
-
     int i = 0;
     while(fgets(line,sizeof(line),file)){
-        sscanf(line,"username:%[^,],score:%d,gold:%d,games:%d,time:%d",
+        sscanf(line,"username:%[^,],score:%d,gold:%d,games:%d,time:%ld",
         users[i].name, &users[i].score, &users[i].gold, &users[i].games, &users[i].time);        
         i++;
     }
@@ -399,9 +395,10 @@ void ScoreBoard(){
     attron(COLOR_PAIR(1));
     box(stdscr , 0 , 0);
     mvprintw(1, 1, "\tPress enter to back to Pre-Menu Game");
-    mvprintw(3, (w - 70)/2 , "Rank    Username                Scores    Golds    Games    Wins");
+    mvprintw(3, (w - 70)/2 , "Rank    Username                Scores    Golds    Games    Time");
     mvprintw(4, (w - 70)/2 , "________________________________________________________________");
     attroff(COLOR_PAIR(1));
+    time_t  now = time(NULL);
 
     for(int j = 0; j < i && j < (h - 2)/2; j++){
         char curline[200];
@@ -409,34 +406,34 @@ void ScoreBoard(){
         if(j == 0){
             attron(A_BOLD);
             attron(COLOR_PAIR(7));
-            sprintf(curline,     "%-4d    🥇 Goat %-12s    %-6d    %-5d    %-5d    %-4d"
-            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, users[j].time);
+            sprintf(curline,     "%-4d    🥇 Goat %-12s    %-6d    %-5d    %-5d    %-4.2f"
+            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, difftime(now, users[j].time));
         }
         // rank2
         else if(j == 1){
             attron(A_BOLD);
             attron(COLOR_PAIR(12));
-            sprintf(curline,     "%-4d    🥈 Legend %-11s   %-6d    %-5d    %-5d    %-4d"
-            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, users[j].time);
+            sprintf(curline,     "%-4d    🥈 Legend %-11s   %-6d    %-5d    %-5d    %-4.2f"
+            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, difftime(now, users[j].time));
         }
         // rank3
         else if(j == 2){
             attron(A_BOLD);
             attron(COLOR_PAIR(6));
-            sprintf(curline,     "%-4d    🥉 Myth %-13s   %-6d    %-5d    %-5d    %-4d"
-            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, users[j].time);
+            sprintf(curline,     "%-4d    🥉 Myth %-13s   %-6d    %-5d    %-5d    %-4.2f"
+            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, difftime(now, users[j].time));
         }
         // curent user
         else if(j == cur_j){
             attron(COLOR_PAIR(3));
-            sprintf(curline,     "%-4d    %-20s    %-6d    %-5d    %-5d    %-4d"
-            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, users[j].time);
+            sprintf(curline,     "%-4d    %-20s    %-6d    %-5d    %-5d    %-4.2f"
+            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, difftime(now, users[j].time));
         }
         // others
         else{
             attron(COLOR_PAIR(0));
-            sprintf(curline,     "%-4d    %-20s    %-6d    %-5d    %-5d    %-4d"
-            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, users[j].time);
+            sprintf(curline,     "%-4d    %-20s    %-6d    %-5d    %-5d    %-4.2f"
+            ,j+1,users[j].name, users[j].score, users[j].gold, users[j].games, difftime(now, users[j].time));
         }
 
         mvprintw(6 + j*2 , (w - 70)/2,"%s", curline);
@@ -553,6 +550,90 @@ void Setting_Menu(){
         }
     }
 }
+void Profile_Menu(){
+    FILE* file = fopen("Scoreboard.txt","r");
+    char line[250] = {0};
+
+    typedef struct board{
+        char name[50];
+        int score;
+        int gold;
+        int games;
+        long int time;
+    }Board;
+
+    Board profile_user;
+
+    while(fgets(line,sizeof(line),file)){
+        sscanf(line,"username:%[^,],score:%d,gold:%d,games:%d,time:%ld",
+        profile_user.name, &profile_user.score, &profile_user.gold, &profile_user.games, &profile_user.time);        
+        if(strcmp(profile_user.name, current_user.username) == 0)
+            break;
+    }
+    fclose(file);
+
+    clear();
+    attron(COLOR_PAIR(1));
+    box(stdscr , 0 , 0);
+    mvprintw(1, 1, "\tPress enter to back to Pre-Menu Game");
+    attroff(COLOR_PAIR(1));
+
+    char string[30][90] = {
+        "  __    _    _    __                !                                        ",
+        " |  |__| |__| |__|  |               |._                                      ",
+        "  \\________________/                |  `'.                                   ",
+        "   |              |                 |_,-'                                    ",
+        " __|   __    __   |__    __    __   |___    __    __    __    __    __    __ ",
+        "|  |__|  |__|  |__|  |__|  |__|  |__|   |__|  |__|  |__|  |__|  |__|  |__|  |",
+        "|                                                                           |",
+        "|       .-=~;@;~=-.-=~;@;~-=.=-~;@;~=-.-=~;@;~=-.-=~;@;~=-.-=~;@;~=-.       |",
+        "|       |                             |                             |       |",
+        "|       :           Rogue             :                             :       |",
+        "|       @      by Nafiseh Zarei       @                             @       |",
+        "|       :     (February, 6, 2025)     :                             :       |",
+        "|       |            _                |        ⫸ Username ⫷         |       |",
+        "|       .          _/ \\/\\,_           .                             .       |",
+        "|       |         /_/\\_/\\/ \\\\         |         ⫸ Scores ⫷          |       |",
+        "|   ,   :        (~//{@} \\/~/\\        :                             :   ,   |",
+        "|  `(,  @       /\\\\ \\__~/ |`\\_)       @          ⫸ Golds ⫷          @  `),  |",
+        "|  ( )  :    _..\\\\`\\~___~/__/|,.,     :                             :  ( )  |",
+        "|  \\_/  |    '.  \\____/`_/__/ ,'      |          ⫸ Games ⫷          |  \\_/  |",
+        "|   |   .      `'`-'`\\/__/._.-'       .                             .   |   |",
+        "| . | . |                             |          ⫸  Time ⫷          | . | . |",
+        "|  \\|/  :                             :                             :  \\|/  |",
+        "|   !   @        \"For freedom\"        @                             @   !   |",
+        "|       :                             :                             :       |",
+        "|       |                             |                             |       |",
+        "|       '-=~;@;~=-.-=~;@;~-=.=-~;@;~=-.-=~;@;~=-.-=~;@;~=-.-=~;@;~=-'       |",
+        "lc__________________________________________________________________________|",
+        "~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~\"^\"~"
+    };
+    if(h > 35 && w > 90){
+        for(int i = 0; i < 28; i++){
+            attron(COLOR_PAIR(13));
+            mvprintw(3 + i,(w - 77)/2,"%s",string[i]);
+            attroff(COLOR_PAIR(13));
+        }
+        time_t now = time(NULL);
+        attron(A_BOLD);
+        //attron(A_REVERSE);
+        attron(COLOR_PAIR(3));
+        mvprintw(16, (w + 28)/2,"%s",profile_user.name);
+        mvprintw(18, (w + 28)/2,"%d",profile_user.score);
+        mvprintw(20, (w + 28)/2,"%d",profile_user.gold);
+        mvprintw(22, (w + 28)/2,"%d",profile_user.games);
+        mvprintw(24, (w + 28)/2,"%.2f",difftime(now, profile_user.time));
+        attroff(COLOR_PAIR(3));
+        attroff(A_BOLD);
+        //attroff(A_REVERSE);
+    }else{
+        mvprintw(h/2, w/2, "Your Window is small");
+    }
+
+    int ch = getch();
+    while(ch != 10) ch = getch();
+    return;
+}
 int Check_Username(const char* username) {
     FILE *file = fopen("Users.txt", "r");
 
@@ -622,8 +703,9 @@ void Save_User(const User *user) {
     fprintf(fileuser, "%s,%s,%s\n", user->username, user->password, user->email);
     fclose(fileuser);
     // Save user's information in Scoreboard.txt
+    time_t now = time(NULL);
     FILE *filescore = fopen("Scoreboard.txt", "a");
-    fprintf(filescore, "username:%s,score:0,gold:0,games:0,time:0\n", user->username);
+    fprintf(filescore, "username:%s,score:0,gold:0,games:0,time:%ld\n", user->username,now);
     fclose(filescore);
 
     //Make new Folder for user
