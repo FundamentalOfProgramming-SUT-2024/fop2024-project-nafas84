@@ -589,7 +589,7 @@ void Setting_Menu(){
                 if(highlight == 0){ 
                     current_user.music = 0;
                 }
-                else if(highlight == 1 || highlight == 2){
+                else if(highlight == 1){
                     current_user.music = 1;
                 }
                 else if(highlight == 2){
